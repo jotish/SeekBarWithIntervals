@@ -1,11 +1,11 @@
 
-# SeekBarWithIntervals
+# SeekBarWithIntervals with multiple pins
 This is SeekbarWithIntervals - an extension of the Seekbar with labels.
 
 Seekbar with labelled intervals  Like Olx FilterView Seekbar.
  
 # Screen Shot
-<img src="first.png" width="30%"/> <img src="second.png" width="30%"/> 
+<img src="first.png" width="30%"/>
 
 #Thanks to
 https://www.informaticscentre.co.uk/blog/implementing-a-seekbar-with-stepped-intervals-in-android
