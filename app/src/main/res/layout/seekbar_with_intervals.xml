@@ -3,13 +3,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
-
-    <SeekBar
+    <com.appyvet.materialrangebar.RangeBar
         android:id="@+id/seekbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:mrb_pinMaxFont="10sp"
+        app:mrb_rangeBarPaddingBottom="12dp"
+        app:mrb_selectorBoundaryColor="@color/white"
+        app:mrb_selectorBoundarySize="2dp"
+        app:mrb_pinTextColor="@color/black"
+        app:mrb_selectorSize="10dp"/>
 
     <RelativeLayout
         android:id="@+id/intervals"

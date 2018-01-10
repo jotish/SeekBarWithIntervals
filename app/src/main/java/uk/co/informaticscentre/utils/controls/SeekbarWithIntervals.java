@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.appyvet.materialrangebar.RangeBar;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +22,7 @@ import uk.co.informaticscentre.utils.R;
 
 public class SeekbarWithIntervals extends LinearLayout {
     private RelativeLayout RelativeLayout = null;
-    private SeekBar Seekbar = null;
+    private RangeBar Seekbar = null;
 
     private int WidthMeasureSpec = 0;
     private int HeightMeasureSpec = 0;
@@ -78,7 +79,7 @@ public class SeekbarWithIntervals extends LinearLayout {
             int firstIntervalWidth = getRelativeLayout().getChildAt(0).getWidth();
             int remainingPaddableWidth = widthOfSeekbar - firstIntervalWidth - widthOfSeekbarThumb;
 
-            int numberOfIntervals = getSeekbar().getMax();
+            int numberOfIntervals =  Math.round(getSeekbar().getTickEnd());
             int maximumWidthOfEachInterval = remainingPaddableWidth / numberOfIntervals;
 
             alignFirstInterval(thumbOffset);
@@ -130,18 +131,12 @@ public class SeekbarWithIntervals extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public int getProgress() {
-        return getSeekbar().getProgress();
-    }
 
     public void setIntervals(List<String> intervals) {
         displayIntervals(intervals);
-        getSeekbar().setMax(intervals.size() - 1);
+        getSeekbar().setTickEnd(intervals.size() - 1);
     }
 
-    public void setProgress(int progress) {
-        getSeekbar().setProgress(progress);
-    }
 
     private void displayIntervals(List<String> intervals) {
         int idOfPreviousInterval = 0;
@@ -215,27 +210,17 @@ public class SeekbarWithIntervals extends LinearLayout {
 
     public void setOnSeekBarChangeListener(final SeekBar.OnSeekBarChangeListener onSeekBarChangeListener) {
 
-        getSeekbar().setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+        getSeekbar().setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 for (int i = 0; i < getRelativeLayout().getChildCount(); i++) {
                     TextView tv = (TextView) getRelativeLayout().getChildAt(i);
-                    if (i == seekBar.getProgress())
+                    if (i == leftPinIndex || i == rightPinIndex)
                         tv.setTextColor(getResources().getColor(R.color.colorPrimary));
                     else
                         tv.setTextColor(getResources().getColor(R.color.white));
                 }
-                onSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                onSeekBarChangeListener.onStartTrackingTouch(seekBar);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                onSeekBarChangeListener.onStopTrackingTouch(seekBar);
             }
         });
 
@@ -250,11 +235,15 @@ public class SeekbarWithIntervals extends LinearLayout {
         return RelativeLayout;
     }
 
-    private SeekBar getSeekbar() {
+    private RangeBar getSeekbar() {
         if (Seekbar == null) {
-            Seekbar = (SeekBar) findViewById(R.id.seekbar);
+            Seekbar = (RangeBar) findViewById(R.id.seekbar);
         }
 
         return Seekbar;
+    }
+
+    public void setTickChangeListener(RangeBar.OnRangeBarTextListener onRangeBarTextListener){
+        getSeekbar().setPinTextListener(onRangeBarTextListener);
     }
 }
